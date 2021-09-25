@@ -38,6 +38,7 @@
         android:layout_height="49dp"
         android:layout_marginTop="64dp"
         android:background="#505050"
+        android:queryHint="@string/search_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
