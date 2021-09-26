@@ -8,6 +8,7 @@
     <string name="new_note">New Note</string>
     <string name="next">Next</string>
     <string name="back">Back</string>
+    <string name="done">Done</string>
 
     <string name="all_notes_title">All Notes</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
