@@ -5,8 +5,9 @@
     <string name="first_fragment_label">Great Notes</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="search_hint">Name of note</string>
+    <string name="new_note">New Note</string>
     <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="back">Back</string>
 
     <string name="all_notes_title">All Notes</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
