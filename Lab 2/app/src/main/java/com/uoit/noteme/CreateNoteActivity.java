@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -33,5 +34,31 @@ public class CreateNoteActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch(view.getId()) {
+            case R.id.redSelect:
+                if (checked) {
+                    // select red for note
+                    break;
+                }
+            case R.id.blueSelect:
+                if (checked) {
+                    // select blue for note
+                    break;
+                }
+            case R.id.greenSelect:
+                if (checked) {
+                    // select green for note
+                    break;
+                }
+            case R.id.yellowSelect:
+                if (checked) {
+                    // select yellow for note
+                    break;
+                }
+        }
     }
 }
