@@ -3,7 +3,11 @@ package com.uoit.noteme;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+import android.widget.Toolbar;
 
 public class CreateNoteActivity extends AppCompatActivity {
 
@@ -16,6 +20,18 @@ public class CreateNoteActivity extends AppCompatActivity {
         imageBack.setOnClickListener(v -> onBackPressed());
 
         ImageView imageDone = findViewById(R.id.imageSave);
-        imageDone.setOnClickListener(v -> onBackPressed());
+        imageDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText titleText = (EditText) findViewById(R.id.inputNoteTitle);
+                String titleValue = titleText.getText().toString();
+
+                if (titleValue.matches("")) {
+                    titleText.setError("Title is empty, a title is required to save");
+                } else {
+                    // save the note in datebase
+                }
+            }
+        });
     }
 }
