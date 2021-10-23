@@ -36,6 +36,10 @@ public class CreateNoteActivity extends AppCompatActivity {
 
                 String colour = colourGroup(v);
 
+                if (colour.matches("none")) {
+                    colour = "white";
+                }
+
                 if (titleValue.matches("")) {
                     titleText.setError("Title is empty, a title is required to save");
                 } else {
@@ -47,10 +51,16 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     public String colourGroup(View view) {
+        RadioButton selectedButton;
+        String colour = "none";
         RadioGroup colourGroup = (RadioGroup) findViewById(R.id.colourGroup);
         int selectedColour = colourGroup.getCheckedRadioButtonId();
 
-        RadioButton selectedButton = (RadioButton) findViewById(selectedColour);
+        if (colourGroup.getCheckedRadioButtonId() == -1) {
+            return colour;
+        } else {
+            selectedButton = (RadioButton) findViewById(selectedColour);
+        }
 
         return selectedButton.getText().toString();
 
