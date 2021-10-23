@@ -1,6 +1,11 @@
 package com.uoit.noteme;
 
-public class NotesModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class NotesModel implements Serializable {
     private int id;
     private String title;
     private String subtitle;

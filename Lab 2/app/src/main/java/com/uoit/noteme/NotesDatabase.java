@@ -2,10 +2,12 @@ package com.uoit.noteme;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NotesDatabase extends SQLiteOpenHelper {
 
@@ -54,6 +56,31 @@ public class NotesDatabase extends SQLiteOpenHelper {
             return false;
         }
         return true;
+    }
+
+    public List<NotesModel> getAllNotes() {
+        List<NotesModel> notes = new ArrayList<>();
+
+        String query = "select * from " + NOTES_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String subtitle = cursor.getString(2);
+                String body = cursor.getString(3);
+                String colour = cursor.getString(4);
+
+                NotesModel note = new NotesModel(id, title, subtitle, body, colour);
+                notes.add(note);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return notes;
     }
 
 }

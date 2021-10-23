@@ -2,7 +2,10 @@ package com.uoit.noteme;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,7 +19,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NotesDatabase notesDatabase = new NotesDatabase(this);
+        //NotesDatabase notesDatabase = new NotesDatabase(this);
 
         setContentView(R.layout.activity_create_note);
 
@@ -49,12 +52,14 @@ public class CreateNoteActivity extends AppCompatActivity {
                 } else {
                     try {
                         notesModel = new NotesModel(-1, titleValue, subtitleValue, noteBody, colour);
-                        System.out.println(notesModel.toString());
                     } catch (Exception e) {
                         Toast.makeText(CreateNoteActivity.this, "Error saving note", Toast.LENGTH_SHORT).show();
                     }
-                    boolean insertStatus = notesDatabase.addNote(notesModel);
-                    onBackPressed();
+                    //boolean insertStatus = notesDatabase.addNote(notesModel);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("note", notesModel);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
                 }
                 
             }
