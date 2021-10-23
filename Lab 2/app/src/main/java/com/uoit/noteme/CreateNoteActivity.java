@@ -16,6 +16,8 @@ public class CreateNoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        NotesDatabase notesDatabase = new NotesDatabase(this);
+
         setContentView(R.layout.activity_create_note);
 
         ImageView imageBack = findViewById(R.id.imageBack);
@@ -34,6 +36,8 @@ public class CreateNoteActivity extends AppCompatActivity {
                 EditText noteText = (EditText) findViewById(R.id.inputNote);
                 String noteBody = noteText.getText().toString();
 
+                NotesModel notesModel = null;
+
                 String colour = colourGroup(v);
 
                 if (colour.matches("none")) {
@@ -43,9 +47,16 @@ public class CreateNoteActivity extends AppCompatActivity {
                 if (titleValue.matches("")) {
                     titleText.setError("Title is empty, a title is required to save");
                 } else {
-                    NotesModel notesModel = new NotesModel(1, titleValue, subtitleValue, noteBody, colour);
-                    System.out.println(notesModel.toString());
+                    try {
+                        notesModel = new NotesModel(-1, titleValue, subtitleValue, noteBody, colour);
+                        System.out.println(notesModel.toString());
+                    } catch (Exception e) {
+                        Toast.makeText(CreateNoteActivity.this, "Error saving note", Toast.LENGTH_SHORT).show();
+                    }
+                    boolean insertStatus = notesDatabase.addNote(notesModel);
+                    onBackPressed();
                 }
+                
             }
         });
     }
