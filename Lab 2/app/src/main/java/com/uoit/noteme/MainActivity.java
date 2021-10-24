@@ -37,11 +37,13 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_ADD_NOTE) {
             if (resultCode == Activity.RESULT_OK) {
                 notesData = (NotesModel) data.getExtras().getSerializable("note");
+                System.out.println("NEW NOTE " + notesData.toString());
+                notesDatabase.addNote(notesData);
             }
         }
 
-        System.out.println("NEW NOTE " + notesData.toString());
-        notesDatabase.addNote(notesData);
+//        System.out.println("NEW NOTE " + notesData.toString());
+//        notesDatabase.addNote(notesData);
 
     }
 }
