@@ -56,13 +56,12 @@ public class MainActivity extends AppCompatActivity {
                 notesData = (NotesModel) data.getExtras().getSerializable("note");
                 System.out.println("NEW NOTE " + notesData.toString());
                 notesDatabase.addNote(notesData);
+
+                //updates notes arraylist and update list adapter
                 notes = notesDatabase.getAllNotes();
-                listAdapter.notifyDataSetChanged();
+                listAdapter.updateAdapter(notes);
             }
         }
-
-//        System.out.println("NEW NOTE " + notesData.toString());
-//        notesDatabase.addNote(notesData);
 
     }
 }

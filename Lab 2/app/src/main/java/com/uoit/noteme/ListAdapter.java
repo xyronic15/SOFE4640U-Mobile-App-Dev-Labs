@@ -54,4 +54,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             subtitle = itemView.findViewById(R.id.listNoteSubtitle);
         }
     }
+
+    public void updateAdapter(ArrayList<NotesModel> notes){
+        this.notesArrayList = notes;
+        this.notifyDataSetChanged();
+    }
 }
