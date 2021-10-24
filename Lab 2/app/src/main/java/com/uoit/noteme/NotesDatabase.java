@@ -58,8 +58,8 @@ public class NotesDatabase extends SQLiteOpenHelper {
         return true;
     }
 
-    public List<NotesModel> getAllNotes() {
-        List<NotesModel> notes = new ArrayList<>();
+    public ArrayList<NotesModel> getAllNotes() {
+        ArrayList<NotesModel> notes = new ArrayList<>();
 
         String query = "select * from " + NOTES_TABLE;
         SQLiteDatabase db = this.getReadableDatabase();
