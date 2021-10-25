@@ -9,10 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +49,41 @@ public class MainActivity extends AppCompatActivity {
 
         listAdapter = new ListAdapter(MainActivity.this, notes);
         recyclerView.setAdapter(listAdapter);
+
+        //add listener for search
+        EditText searchbar = findViewById(R.id.inputSearch);
+        searchbar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                searchNotes(searchbar.getText().toString());
+            }
+        });
+
+    }
+
+    private void searchNotes(String noteTitle){
+
+        ArrayList<NotesModel> searchedNotes = new ArrayList<>();
+        notes = notesDatabase.getAllNotes();
+        if (!noteTitle.isEmpty()){
+            for (NotesModel n : notes){
+                if (n.getTitle().toLowerCase().contains(noteTitle.toLowerCase())){
+                    searchedNotes.add(n);
+                }
+            }
+            notes = searchedNotes;
+            listAdapter.updateAdapter(notes);
+        }
+        else {
+            notes = notesDatabase.getAllNotes();
+            listAdapter.updateAdapter(notes);
+        }
 
     }
 
