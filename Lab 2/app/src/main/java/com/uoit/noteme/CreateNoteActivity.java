@@ -43,10 +43,6 @@ public class CreateNoteActivity extends AppCompatActivity {
 
                 String colour = colourGroup(v);
 
-                if (colour.matches("none")) {
-                    colour = "white";
-                }
-
                 if (titleValue.matches("")) {
                     titleText.setError("Title is empty, a title is required to save");
                 } else {
@@ -73,12 +69,26 @@ public class CreateNoteActivity extends AppCompatActivity {
         int selectedColour = colourGroup.getCheckedRadioButtonId();
 
         if (colourGroup.getCheckedRadioButtonId() == -1) {
-            return colour;
-        } else {
-            selectedButton = (RadioButton) findViewById(selectedColour);
+            return "#fafafa";
         }
 
-        return selectedButton.getText().toString();
+        selectedButton = (RadioButton) findViewById(selectedColour);
 
+        switch(selectedButton.getText().toString()) {
+            case("Red"):
+                colour = "#ff7961";
+                break;
+            case("Blue"):
+                colour = "#6ec6ff";
+                break;
+            case("Green"):
+                colour = "#80e27e";
+                break;
+            case("Yellow"):
+                colour = "#ffff72";
+                break;
+        }
+
+        return colour;
     }
 }

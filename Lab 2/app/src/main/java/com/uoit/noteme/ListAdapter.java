@@ -1,6 +1,7 @@
 package com.uoit.noteme;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         NotesModel note = notesArrayList.get(position);
         holder.title.setText(note.getTitle());
         holder.subtitle.setText(note.getSubtitle());
+        holder.setBackgroundColor(note.getColour());
     }
 
     @Override
@@ -52,6 +54,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             super(itemView);
             title = itemView.findViewById(R.id.listNoteTitle);
             subtitle = itemView.findViewById(R.id.listNoteSubtitle);
+        }
+        public void setBackgroundColor(String colour) {
+            itemView.setBackgroundColor(Color.parseColor(colour));
         }
     }
 
