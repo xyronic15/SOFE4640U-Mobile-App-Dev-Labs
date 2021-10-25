@@ -83,4 +83,28 @@ public class NotesDatabase extends SQLiteOpenHelper {
         return notes;
     }
 
+    public List<NotesModel> searchNotes(String searchTitle) {
+        List<NotesModel> notes = new ArrayList<>();
+
+        String query = "select * from " + NOTES_TABLE + " where " + NOTES_TITLE + "=\"" + searchTitle + "\"";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String subtitle = cursor.getString(2);
+                String body = cursor.getString(3);
+                String colour = cursor.getString(4);
+
+                NotesModel note = new NotesModel(id, title, subtitle, body, colour);
+                notes.add(note);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return notes;
+    }
+
 }
