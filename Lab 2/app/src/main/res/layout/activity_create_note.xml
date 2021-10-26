@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context=".CreateNoteActivity">
 
     <ScrollView
@@ -157,6 +156,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="colorChange"
                     android:text="Red" />
 
                 <RadioButton
@@ -164,6 +164,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="colorChange"
                     android:text="Blue" />
 
                 <RadioButton
@@ -171,6 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="colorChange"
                     android:text="Green" />
 
                 <RadioButton
@@ -178,6 +180,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="colorChange"
                     android:text="Yellow" />/>
             </RadioGroup>
 

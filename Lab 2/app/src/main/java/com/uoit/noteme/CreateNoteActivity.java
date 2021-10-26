@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
+import android.view.ViewParent;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -15,6 +18,8 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 public class CreateNoteActivity extends AppCompatActivity {
+
+    RadioGroup colorChoice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,35 @@ public class CreateNoteActivity extends AppCompatActivity {
                 
             }
         });
+
+        //change note color
+        colorChoice = (RadioGroup) findViewById(R.id.colourGroup);
+
+    }
+
+    public void colorChange(View v){
+        View root = v.getRootView();
+
+        String colour = "none";
+        switch(colorChoice.getCheckedRadioButtonId()) {
+            case R.id.redSelect:
+                colour = "#ff7961";
+                root.setBackgroundColor(Color.parseColor(colour));
+                break;
+            case R.id.blueSelect:
+                colour = "#6ec6ff";
+                root.setBackgroundColor(Color.parseColor(colour));
+                break;
+            case R.id.greenSelect:
+                colour = "#80e27e";
+                root.setBackgroundColor(Color.parseColor(colour));
+                break;
+            case R.id.yellowSelect:
+                colour = "#ffff72";
+                root.setBackgroundColor(Color.parseColor(colour));
+                break;
+        }
+        root.setBackgroundColor(Color.parseColor(colour));
     }
 
     public String colourGroup(View view) {
