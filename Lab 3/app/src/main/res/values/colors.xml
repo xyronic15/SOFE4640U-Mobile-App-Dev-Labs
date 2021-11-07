@@ -19,12 +19,12 @@
     <color name="colorTextSubtitle">#CECECE</color>
     <color name="colorDefaultNoteColor">#333333</color>
     <color name="colorNoteSubtitleText">#FAFAFA</color>
-    <color name="colorColorBackground">#1F1F1F</color>
+    <color name="colorMiscellaneousBackground">#1F1F1F</color>
 
-    <color name="colorNoteColor2">#FFFF00</color>
-    <color name="colorNoteColor3">#7B99F4 </color>
-    <color name="colorNoteColor4">#98D319 </color>
-    <color name="colorNoteColor5">#19CED3 </color>
+    <color name="colorNoteColor2">#FDBE3B</color>
+    <color name="colorNoteColor3">#FF4842</color>
+    <color name="colorNoteColor4">#3A52FC</color>
+    <color name="colorNoteColor5">#000000</color>
     <color name="colorDelete">#FF4842</color>
     <color name="colorSearchBackground">#7B7B7B</color>
     <color name="colorBackground">#FECEC3</color>
