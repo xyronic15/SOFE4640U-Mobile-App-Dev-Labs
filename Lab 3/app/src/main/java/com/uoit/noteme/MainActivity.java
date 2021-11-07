@@ -18,6 +18,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements ListAdapter.OnNoteListener {
 
     public static final int REQUEST_CODE_ADD_NOTE = 1;
+    public static final int REQUEST_CODE_EDIT_NOTE = 2;
     NotesModel notesData;
     ArrayList<NotesModel> notes;
     NotesDatabase notesDatabase;
@@ -34,10 +35,9 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
 
         imageAddNoteMain.setOnClickListener((v) -> {
             startActivityForResult(new Intent(getApplicationContext(), CreateNoteActivity.class), REQUEST_CODE_ADD_NOTE);
-
         });
 
-        //Get all the notemodels
+        //Get all the note models
         notes = notesDatabase.getAllNotes();
 
         recyclerView = findViewById(R.id.notesRecyclerView);
@@ -57,17 +57,33 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
                 notesData = (NotesModel) data.getExtras().getSerializable("note");
                 System.out.println("NEW NOTE " + notesData.toString());
                 notesDatabase.addNote(notesData);
+            }
+        } else if (requestCode == REQUEST_CODE_EDIT_NOTE) {
+            if (resultCode == Activity.RESULT_OK) {
+                notesData = (NotesModel) data.getExtras().getSerializable("note");
+                System.out.println("Edited Note: " + notesData.toString());
 
-                //updates notes arraylist and update list adapter
-                notes = notesDatabase.getAllNotes();
-                listAdapter.updateAdapter(notes);
+                String action = (String) data.getExtras().get("action");
+
+                if (action.equalsIgnoreCase("edit")) {
+                    notesDatabase.editNote(notesData);
+                } else if (action.equalsIgnoreCase("delete")) {
+                    notesDatabase.deleteNote(notesData);
+                }
             }
         }
 
+        //updates notes arraylist and update list adapter
+        notes = notesDatabase.getAllNotes();
+        listAdapter.updateAdapter(notes);
     }
 
     @Override
     public void onNoteClick(int position) {
-        System.out.println("Clicked: " + position);
+        NotesModel note = notes.get(position);
+        System.out.println(note.toString());
+        Intent intent = new Intent(MainActivity.this, EditNoteActivity.class);
+        intent.putExtra("note", note);
+        startActivityForResult(intent, REQUEST_CODE_EDIT_NOTE);
     }
 }

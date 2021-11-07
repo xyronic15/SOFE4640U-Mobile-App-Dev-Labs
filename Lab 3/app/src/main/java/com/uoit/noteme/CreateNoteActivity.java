@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -23,10 +24,13 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_create_note);
 
+        final int STORAGE_PERMISSION_CODE = 1;
+
         ImageView imageBack = findViewById(R.id.imageBack);
         imageBack.setOnClickListener(v -> onBackPressed());
 
         ImageView imageDone = findViewById(R.id.imageSave);
+
         imageDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +61,6 @@ public class CreateNoteActivity extends AppCompatActivity {
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }
-                
             }
         });
     }
@@ -90,5 +93,9 @@ public class CreateNoteActivity extends AppCompatActivity {
         }
 
         return colour;
+    }
+
+    private void selectImage() {
+
     }
 }

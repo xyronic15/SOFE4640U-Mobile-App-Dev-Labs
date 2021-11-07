@@ -2,9 +2,11 @@ package com.uoit.noteme;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.media.session.PlaybackState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,35 @@ public class NotesDatabase extends SQLiteOpenHelper {
         long insertStatus = db.insert(NOTES_TABLE, null, values);
 
         if (insertStatus == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean editNote(NotesModel note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NOTES_TITLE, note.getTitle());
+        values.put(NOTES_SUBTITLE, note.getSubtitle());
+        values.put(NOTES_BODY, note.getBody());
+        values.put(NOTES_COLOUR, note.getColour());
+
+        System.out.println("ID IS - " + note.getId());
+
+        long updateStatus = db.update(NOTES_TABLE, values, NOTES_ID + "=?", new String[] {Integer.toString(note.getId())});
+
+        if (updateStatus == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteNote(NotesModel note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        long deleteStatus = db.delete(NOTES_TABLE, NOTES_ID + "=?", new String[] {Integer.toString(note.getId())});
+
+        if (deleteStatus == -1) {
             return false;
         }
         return true;
