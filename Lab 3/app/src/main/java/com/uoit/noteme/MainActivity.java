@@ -9,12 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ListAdapter.OnNoteListener {
 
     public static final int REQUEST_CODE_ADD_NOTE = 1;
     NotesModel notesData;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        listAdapter = new ListAdapter(MainActivity.this, notes);
+        listAdapter = new ListAdapter(MainActivity.this, notes, this);
         recyclerView.setAdapter(listAdapter);
 
     }
@@ -63,5 +64,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public void onNoteClick(int position) {
+        System.out.println("Clicked: " + position);
     }
 }
