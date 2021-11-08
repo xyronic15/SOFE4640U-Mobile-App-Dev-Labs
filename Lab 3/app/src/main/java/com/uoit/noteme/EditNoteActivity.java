@@ -99,10 +99,15 @@ public class EditNoteActivity extends AppCompatActivity {
                                     String noteBody = noteText.getText().toString();
 
                                     BitmapDrawable imgDrawable = ((BitmapDrawable) noteImg.getDrawable());
-                                    Bitmap imgBitmap = imgDrawable.getBitmap();
-                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                    imgBitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-                                    byte[] img = stream.toByteArray();
+                                    byte[] img;
+                                    if (imgDrawable != null){
+                                        Bitmap imgBitmap = imgDrawable.getBitmap();
+                                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                        imgBitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+                                        img = stream.toByteArray();
+                                    } else {
+                                        img = new byte[0];
+                                    }
 
                                     NotesModel notesModel = null;
 
@@ -141,10 +146,15 @@ public class EditNoteActivity extends AppCompatActivity {
                 String noteBody = noteText.getText().toString();
 
                 BitmapDrawable imgDrawable = ((BitmapDrawable) noteImg.getDrawable());
-                Bitmap imgBitmap = imgDrawable.getBitmap();
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                imgBitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-                byte[] img = stream.toByteArray();
+                byte[] img;
+                if (imgDrawable != null){
+                    Bitmap imgBitmap = imgDrawable.getBitmap();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    imgBitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+                    img = stream.toByteArray();
+                } else {
+                    img = new byte[0];
+                }
 
                 NotesModel notesModel = null;
 
