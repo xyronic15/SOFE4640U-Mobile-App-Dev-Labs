@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -25,6 +26,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 public class CreateNoteActivity extends AppCompatActivity {
@@ -76,6 +78,18 @@ public class CreateNoteActivity extends AppCompatActivity {
                 EditText noteText = (EditText) findViewById(R.id.inputNote);
                 String noteBody = noteText.getText().toString();
 
+                BitmapDrawable imgDrawable = ((BitmapDrawable) noteImg.getDrawable());
+                byte[] img;
+                if (imgDrawable != null){
+                    Bitmap imgBitmap = imgDrawable.getBitmap();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    imgBitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+                    img = stream.toByteArray();
+                } else {
+                    img = new byte[0];
+                }
+
+
                 NotesModel notesModel = null;
 
                 String colour = colourGroup(v);
@@ -84,7 +98,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                     titleText.setError("Title is empty, a title is required to save");
                 } else {
                     try {
-                        notesModel = new NotesModel(-1, titleValue, subtitleValue, noteBody, colour);
+                        notesModel = new NotesModel(-1, titleValue, subtitleValue, noteBody, colour, img);
                     } catch (Exception e) {
                         Toast.makeText(CreateNoteActivity.this, "Error saving note", Toast.LENGTH_SHORT).show();
                     }

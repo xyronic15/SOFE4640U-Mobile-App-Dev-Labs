@@ -11,6 +11,7 @@ import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
 
         if (requestCode == REQUEST_CODE_ADD_NOTE) {
             if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(this, "Note added", Toast.LENGTH_SHORT).show();
                 notesData = (NotesModel) data.getExtras().getSerializable("note");
                 System.out.println("NEW NOTE " + notesData.toString());
                 notesDatabase.addNote(notesData);

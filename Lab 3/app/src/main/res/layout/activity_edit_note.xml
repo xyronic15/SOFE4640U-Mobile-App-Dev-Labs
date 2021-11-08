@@ -136,7 +136,7 @@
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/inputNoteSubTitle" />
+                app:layout_constraintTop_toBottomOf="@id/noteImg" />
 
             <TextView
                 android:id="@+id/textView"
