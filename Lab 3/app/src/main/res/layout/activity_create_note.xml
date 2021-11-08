@@ -101,6 +101,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textDateTime" />
 
+            <ImageView
+                android:id="@+id/noteImg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="109dp"
+                tools:layout_editor_absoluteY="50dp"
+                app:layout_constraintTop_toBottomOf="@id/inputNoteSubTitle"
+                />
+
             <EditText
                 android:id="@+id/inputNote"
                 android:layout_width="match_parent"
@@ -121,7 +132,7 @@
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/inputNoteSubTitle" />
+                app:layout_constraintTop_toBottomOf="@id/noteImg" />
 
             <TextView
                 android:id="@+id/textView"
@@ -197,7 +208,7 @@
             </RadioGroup>
 
             <LinearLayout
-                android:id="@+id/layoutAddImage"
+                android:id="@+id/addImage"
                 android:layout_width="363dp"
                 android:layout_height="31dp"
                 android:layout_marginStart="16dp"
