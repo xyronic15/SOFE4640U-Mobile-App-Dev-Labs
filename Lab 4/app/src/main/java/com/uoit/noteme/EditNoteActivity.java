@@ -22,8 +22,10 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -34,6 +36,10 @@ public class EditNoteActivity extends AppCompatActivity {
     private static final int STORAGE_PERMISSION_CODE = 1;
     private static final int SELECT_IMG_CODE = 2;
     private ImageView noteImg;
+    private TextView textWebURL;
+    private LinearLayout layoutWebURL;
+
+    private AlertDialog dialogAddURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,14 @@ public class EditNoteActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeByteArray(imgBytes, 0,imgBytes.length);
             noteImg.setImageBitmap(bitmap);
             noteImg.setVisibility(View.VISIBLE);
+        }
+
+        textWebURL = findViewById(R.id.textWebURL);
+        layoutWebURL = findViewById(R.id.layoutWebURL);
+        String notesURL = note.getNoteURL();
+        if (!notesURL.isEmpty()){
+            textWebURL.setText(notesURL);
+            layoutWebURL.setVisibility(View.VISIBLE);
         }
 
         findViewById(R.id.addImage).setOnClickListener(new View.OnClickListener() {
@@ -109,10 +123,12 @@ public class EditNoteActivity extends AppCompatActivity {
                                         img = new byte[0];
                                     }
 
+                                    String notesURL = textWebURL.getText().toString();
+
                                     NotesModel notesModel = null;
 
                                     String colour = colourGroup(v);
-                                    notesModel = new NotesModel(note.getId(), titleValue, subtitleValue, noteBody, colour, img);
+                                    notesModel = new NotesModel(note.getId(), titleValue, subtitleValue, noteBody, colour, img, notesURL);
 
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     intent.putExtra("note", notesModel);
@@ -156,6 +172,8 @@ public class EditNoteActivity extends AppCompatActivity {
                     img = new byte[0];
                 }
 
+                String notesURL = textWebURL.getText().toString();
+
                 NotesModel notesModel = null;
 
                 String colour = colourGroup(v);
@@ -164,7 +182,7 @@ public class EditNoteActivity extends AppCompatActivity {
                     titleText.setError("Title is empty, a title is required to save");
                 } else {
                     try {
-                        notesModel = new NotesModel(note.getId(), titleValue, subtitleValue, noteBody, colour, img);
+                        notesModel = new NotesModel(note.getId(), titleValue, subtitleValue, noteBody, colour, img, notesURL);
                     } catch (Exception e) {
                         Toast.makeText(EditNoteActivity.this, "Error saving note", Toast.LENGTH_SHORT).show();
                     }
