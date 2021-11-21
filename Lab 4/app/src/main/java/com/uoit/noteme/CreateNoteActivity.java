@@ -8,32 +8,43 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.regex.Pattern;
 
 public class CreateNoteActivity extends AppCompatActivity {
 
     private static final int STORAGE_PERMISSION_CODE = 1;
     private static final int SELECT_IMG_CODE = 2;
     private ImageView noteImg;
+    private TextView textWebURL;
+    private LinearLayout layoutWebURL;
+
+    private AlertDialog dialogAddURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +57,16 @@ public class CreateNoteActivity extends AppCompatActivity {
         imageBack.setOnClickListener(v -> onBackPressed());
 
         noteImg = findViewById(R.id.noteImg);
+        textWebURL = findViewById(R.id.textWebURL);
+        layoutWebURL = findViewById(R.id.layoutWebURL);
+
+        //set the onclicklistener for addURLLayout
+        findViewById(R.id.addUrlLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getWebURLDialog();
+            }
+        });
 
         findViewById(R.id.addImage).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +110,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                     img = new byte[0];
                 }
 
+                String notesURL = textWebURL.getText().toString();
 
                 NotesModel notesModel = null;
 
@@ -98,7 +120,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                     titleText.setError("Title is empty, a title is required to save");
                 } else {
                     try {
-                        notesModel = new NotesModel(-1, titleValue, subtitleValue, noteBody, colour, img);
+                        notesModel = new NotesModel(-1, titleValue, subtitleValue, noteBody, colour, img, notesURL);
                     } catch (Exception e) {
                         Toast.makeText(CreateNoteActivity.this, "Error saving note", Toast.LENGTH_SHORT).show();
                     }
@@ -178,5 +200,49 @@ public class CreateNoteActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    // Function to get the web url
+    public void getWebURLDialog(){
+        if (dialogAddURL == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
+            View view = LayoutInflater.from(this).inflate(
+                    R.layout.layout_add_url,
+                    (ViewGroup) findViewById(R.id.layoutAddURLContainer)
+            );
+            builder.setView(view);
+
+            dialogAddURL = builder.create();
+            if (dialogAddURL.getWindow() != null){
+                dialogAddURL.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+
+            final EditText inputURL = view.findViewById(R.id.inputURL);
+            inputURL.requestFocus();
+
+            view.findViewById(R.id.textAdd).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (inputURL.getText().toString().isEmpty()){
+                        Toast.makeText(CreateNoteActivity.this, "Please enter an URL", Toast.LENGTH_SHORT).show();
+                    }else if (!Patterns.WEB_URL.matcher(inputURL.getText().toString()).matches()){
+                        Toast.makeText(CreateNoteActivity.this, "Enter a valid URL", Toast.LENGTH_SHORT).show();
+                    }else {
+                        textWebURL.setText(inputURL.getText().toString());
+                        layoutWebURL.setVisibility(View.VISIBLE);
+                        dialogAddURL.dismiss();
+                    }
+                }
+            });
+
+            view.findViewById(R.id.textCancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogAddURL.dismiss();
+                }
+            });
+        }
+
+        dialogAddURL.show();
     }
 }

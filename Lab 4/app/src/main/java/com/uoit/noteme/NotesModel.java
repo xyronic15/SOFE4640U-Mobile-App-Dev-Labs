@@ -12,15 +12,16 @@ public class NotesModel implements Serializable {
     private String body;
     private String colour;
     private byte[] img;
+    private String noteURL;
 
-    public NotesModel(int id, String title, String subtitle, String body, String colour, byte[] img) {
+    public NotesModel(int id, String title, String subtitle, String body, String colour, byte[] img, String noteURL) {
         this.id = id;
         this.title = title;
         this.subtitle = subtitle;
         this.body = body;
         this.colour = colour;
         this.img = img;
-
+        this.noteURL = noteURL;
     }
 
     @Override
@@ -78,4 +79,6 @@ public class NotesModel implements Serializable {
     }
 
     public byte[] getImg() { return img; }
+
+    public String getNoteURL() { return noteURL; }
 }

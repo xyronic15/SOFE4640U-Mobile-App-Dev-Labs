@@ -21,6 +21,7 @@ public class NotesDatabase extends SQLiteOpenHelper {
     public static final String NOTES_BODY = "body";
     public static final String NOTES_COLOUR = "colour";
     public static final String NOTES_IMG = "image";
+    public static final String NOTES_LINK = "link";
 
     public NotesDatabase(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -34,8 +35,9 @@ public class NotesDatabase extends SQLiteOpenHelper {
             NOTES_TITLE + " text not null, " +
             NOTES_SUBTITLE + " text, " +
             NOTES_BODY + " text, " +
-            NOTES_COLOUR + " text," +
-            NOTES_IMG + " blob" +
+            NOTES_COLOUR + " text, " +
+            NOTES_IMG + " blob, " +
+            NOTES_LINK + " text" +
             ");"
         );
     }
@@ -55,6 +57,7 @@ public class NotesDatabase extends SQLiteOpenHelper {
         values.put(NOTES_COLOUR, note.getColour());
         byte[] imgBytes = note.getImg();
         values.put(NOTES_IMG, imgBytes);
+        values.put(NOTES_LINK, note.getNoteURL());
 
         long insertStatus = db.insert(NOTES_TABLE, null, values);
 
@@ -73,6 +76,7 @@ public class NotesDatabase extends SQLiteOpenHelper {
         values.put(NOTES_COLOUR, note.getColour());
         byte[] imgBytes = note.getImg();
         values.put(NOTES_IMG, imgBytes);
+        values.put(NOTES_LINK, note.getNoteURL());
 
         System.out.println("ID IS - " + note.getId());
 
@@ -110,8 +114,9 @@ public class NotesDatabase extends SQLiteOpenHelper {
                 String body = cursor.getString(3);
                 String colour = cursor.getString(4);
                 byte[] img = cursor.getBlob(5);
+                String link = cursor.getString(6);
 
-                NotesModel note = new NotesModel(id, title, subtitle, body, colour, img);
+                NotesModel note = new NotesModel(id, title, subtitle, body, colour, img, link);
                 notes.add(note);
             } while (cursor.moveToNext());
         }
@@ -136,8 +141,9 @@ public class NotesDatabase extends SQLiteOpenHelper {
                 String body = cursor.getString(3);
                 String colour = cursor.getString(4);
                 byte[] img = cursor.getBlob(5);
+                String link = cursor.getString(6);
 
-                NotesModel note = new NotesModel(id, title, subtitle, body, colour, img);
+                NotesModel note = new NotesModel(id, title, subtitle, body, colour, img, link);
                 notes.add(note);
             } while (cursor.moveToNext());
         }
