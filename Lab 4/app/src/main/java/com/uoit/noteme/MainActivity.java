@@ -15,6 +15,9 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.graphics.Bitmap;
+import android.widget.Button;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,10 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
 
     public static final int REQUEST_CODE_ADD_NOTE = 1;
     public static final int REQUEST_CODE_EDIT_NOTE = 2;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    private static final int CAMERA_REQUEST = 1888;
+    private ImageView imageView;
+
     NotesModel notesData;
     ArrayList<NotesModel> notes;
     NotesDatabase notesDatabase;
@@ -36,6 +43,26 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
         notesDatabase = new NotesDatabase(this);
 
         ImageView imageAddNoteMain = findViewById(R.id.imageAddNoteMain);
+
+        this.imageView = (ImageView)this.findViewById(R.id.imageView1);
+        Button photoButton = (Button) this.findViewById(R.id.button1);
+        photoButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                }
+                else
+                {
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                }
+            }
+        });
+    }
+
 
         imageAddNoteMain.setOnClickListener((v) -> {
             startActivityForResult(new Intent(getApplicationContext(), CreateNoteActivity.class), REQUEST_CODE_ADD_NOTE);
@@ -67,6 +94,24 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
         });
     }
 
+    @Override
+   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+       super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+       if (requestCode == MY_CAMERA_PERMISSION_CODE)
+       {
+           if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+           {
+               Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+               Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+               startActivityForResult(cameraIntent, CAMERA_REQUEST);
+           }
+           else
+           {
+               Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+           }
+       }
+   }
+
     private void searchNotes(String noteTitle){
 
         ArrayList<NotesModel> searchedNotes = new ArrayList<>();
@@ -88,6 +133,11 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK){
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(photo);
+        }
 
         if (requestCode == REQUEST_CODE_ADD_NOTE) {
             if (resultCode == Activity.RESULT_OK) {
