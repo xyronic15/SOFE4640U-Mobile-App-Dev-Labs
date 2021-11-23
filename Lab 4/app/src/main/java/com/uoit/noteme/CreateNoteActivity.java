@@ -40,6 +40,8 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     private static final int STORAGE_PERMISSION_CODE = 1;
     private static final int SELECT_IMG_CODE = 2;
+    private static final int CAMERA_PERMISSION_CODE = 3;
+    private static final int CAPTURE_IMG_CODE = 4;
     private ImageView noteImg;
     private TextView textWebURL;
     private LinearLayout layoutWebURL;
@@ -81,6 +83,23 @@ public class CreateNoteActivity extends AppCompatActivity {
                     );
                 } else {
                     selectImage();
+                }
+            }
+        });
+
+        findViewById(R.id.takeImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(
+                        getApplicationContext(), Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(
+                            CreateNoteActivity.this,
+                            new String[] {Manifest.permission.CAMERA},
+                            CAMERA_PERMISSION_CODE
+                    );
+                } else {
+                    captureImage();
                 }
             }
         });
@@ -169,12 +188,23 @@ public class CreateNoteActivity extends AppCompatActivity {
         startActivityForResult(intent, SELECT_IMG_CODE);
     }
 
+    private void captureImage(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAPTURE_IMG_CODE);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == STORAGE_PERMISSION_CODE && grantResults.length > 0){
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 selectImage();
+            } else{
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == CAMERA_PERMISSION_CODE && grantResults.length > 0){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                captureImage();
             } else{
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
             }
@@ -198,6 +228,18 @@ public class CreateNoteActivity extends AppCompatActivity {
                         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        } else if (requestCode == CAPTURE_IMG_CODE && resultCode == RESULT_OK){
+            if (data != null){
+                try {
+                    Bundle bundle = data.getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");
+                    noteImg.setImageBitmap(bitmap);
+                    noteImg.setVisibility(View.VISIBLE);
+                } catch (Exception e){
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
             }
         }
     }
