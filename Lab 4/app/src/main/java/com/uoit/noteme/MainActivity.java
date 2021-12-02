@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -12,10 +13,22 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
 
     public static final int REQUEST_CODE_ADD_NOTE = 1;
     public static final int REQUEST_CODE_EDIT_NOTE = 2;
+    public static final String EXPORT_FILENAME = "notes.json";
     NotesModel notesData;
     ArrayList<NotesModel> notes;
     NotesDatabase notesDatabase;
@@ -39,6 +53,25 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
 
         imageAddNoteMain.setOnClickListener((v) -> {
             startActivityForResult(new Intent(getApplicationContext(), CreateNoteActivity.class), REQUEST_CODE_ADD_NOTE);
+        });
+
+        ImageView imageExportNotes = findViewById(R.id.imageExportNotes);
+
+        imageExportNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    exportAllNotes();
+                    Toast.makeText(MainActivity.this, "JSON exported", Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    Toast.makeText(MainActivity.this, "Could not export", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    Toast.makeText(MainActivity.this, "Could not export", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+//                exportAllNotes();
+            }
         });
 
         //Get all the note models
@@ -123,5 +156,39 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
         Intent intent = new Intent(MainActivity.this, EditNoteActivity.class);
         intent.putExtra("note", note);
         startActivityForResult(intent, REQUEST_CODE_EDIT_NOTE);
+    }
+
+    private void exportAllNotes() throws IOException, JSONException {
+        ArrayList<NotesModel> notesToExport = notesDatabase.getAllNotes();
+
+        JSONArray arrayToExport = new JSONArray();
+        for (NotesModel note: notesToExport) {
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("title", note.getTitle());
+                obj.put("subtitle", note.getSubtitle());
+                obj.put("body", note.getBody());
+                obj.put("img", note.getImg());
+                obj.put("url", note.getNoteURL());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            arrayToExport.put(obj);
+        }
+
+//        FileOutputStream outputStream = getApplicationContext().openFileOutput(EXPORT_FILENAME, Context.MODE_PRIVATE);
+//        outputStream.write(arrayToExport.toString(4).getBytes());
+//        outputStream.close();
+
+        File file = new File(getApplicationContext().getFilesDir(), EXPORT_FILENAME);
+        try {
+            FileWriter writer = new FileWriter(file);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            bufferedWriter.write(arrayToExport.toString(4));
+//            Toast.makeText(MainActivity.this, "JSON exported", Toast.LENGTH_SHORT).show();
+            bufferedWriter.close();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
