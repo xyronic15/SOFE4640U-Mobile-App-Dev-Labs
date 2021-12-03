@@ -17,7 +17,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -30,11 +29,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.regex.Pattern;
 
 public class CreateNoteActivity extends AppCompatActivity {
 
@@ -42,7 +39,9 @@ public class CreateNoteActivity extends AppCompatActivity {
     private static final int SELECT_IMG_CODE = 2;
     private static final int CAMERA_PERMISSION_CODE = 3;
     private static final int CAPTURE_IMG_CODE = 4;
+    private static final int FLOWCHART_CODE = 5;
     private ImageView noteImg;
+    private ImageView flowchartImg;
     private TextView textWebURL;
     private LinearLayout layoutWebURL;
 
@@ -59,6 +58,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         imageBack.setOnClickListener(v -> onBackPressed());
 
         noteImg = findViewById(R.id.noteImg);
+        flowchartImg = findViewById(R.id.flowchartImg);
         textWebURL = findViewById(R.id.textWebURL);
         layoutWebURL = findViewById(R.id.layoutWebURL);
 
@@ -67,6 +67,14 @@ public class CreateNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getWebURLDialog();
+            }
+        });
+
+        // set onclick listener for drawing a flowchart
+        findViewById(R.id.addFlowchart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawFlowchart();
             }
         });
 
@@ -129,6 +137,17 @@ public class CreateNoteActivity extends AppCompatActivity {
                     img = new byte[0];
                 }
 
+                BitmapDrawable flowchartDrawable = ((BitmapDrawable) flowchartImg.getDrawable());
+                byte[] drawing;
+                if (flowchartDrawable != null){
+                    Bitmap drawBitmap = flowchartDrawable.getBitmap();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    drawBitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+                    drawing = stream.toByteArray();
+                } else {
+                    drawing = new byte[0];
+                }
+
                 String notesURL = textWebURL.getText().toString();
 
                 NotesModel notesModel = null;
@@ -139,7 +158,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                     titleText.setError("Title is empty, a title is required to save");
                 } else {
                     try {
-                        notesModel = new NotesModel(-1, titleValue, subtitleValue, noteBody, colour, img, notesURL);
+                        notesModel = new NotesModel(-1, titleValue, subtitleValue, noteBody, colour, img, drawing, notesURL);
                     } catch (Exception e) {
                         Toast.makeText(CreateNoteActivity.this, "Error saving note", Toast.LENGTH_SHORT).show();
                     }
@@ -193,6 +212,11 @@ public class CreateNoteActivity extends AppCompatActivity {
         startActivityForResult(intent, CAPTURE_IMG_CODE);
     }
 
+    private void drawFlowchart(){
+        Intent intent = new Intent(CreateNoteActivity.this, FlowchartActivity.class);
+        startActivityForResult(intent, FLOWCHART_CODE);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -240,6 +264,18 @@ public class CreateNoteActivity extends AppCompatActivity {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
+            }
+        } else if (requestCode == FLOWCHART_CODE && resultCode == RESULT_OK){
+            if (data != null){
+                try {
+                    Bundle bundle = data.getExtras();
+                    byte[] flowBytes = bundle.getByteArray("drawing");
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(flowBytes, 0,flowBytes.length);
+                    flowchartImg.setImageBitmap(bitmap);
+                    flowchartImg.setVisibility(View.VISIBLE);
+                } catch (Exception e){
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

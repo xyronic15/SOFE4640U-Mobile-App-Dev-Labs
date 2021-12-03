@@ -112,6 +112,15 @@
                 app:layout_constraintTop_toBottomOf="@id/inputNoteSubTitle"
                 />
 
+            <ImageView
+                android:id="@+id/flowchartImg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/noteImg"
+                tools:layout_editor_absoluteX="109dp" />
+
             <LinearLayout
                 android:id="@+id/layoutWebURL"
                 android:layout_width="match_parent"
@@ -122,7 +131,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/noteImg">
+                app:layout_constraintTop_toBottomOf="@id/flowchartImg">
 
                 <TextView
                     android:id="@+id/textWebURL"
@@ -335,6 +344,52 @@
                     android:fontFamily="@font/ubuntu_medium"
                     android:includeFontPadding="false"
                     android:text="Add URL"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"></TextView>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="Add Drawing"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addUrlLayout" />
+
+            <LinearLayout
+                android:id="@+id/addFlowchart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_22sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+                <ImageView
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:src="@drawable/ic_flowchart" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:includeFontPadding="false"
+                    android:text="Add Flowchart"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12ssp"></TextView>
 
