@@ -28,7 +28,9 @@ public class FlowchartActivity extends AppCompatActivity {
     public static Paint canvasPaint;
     public static Canvas drawCanvas;
     public static Bitmap canvasBitmap;
-
+    public static boolean pencil;
+    public static boolean rectangle;
+    public static boolean circle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +58,35 @@ public class FlowchartActivity extends AppCompatActivity {
         });
     }
 
-    public void pencil(View view) {
-        brush.setColor(Color.BLACK);
-        currentColor(brush.getColor());
+    public void setPencil(View view) {
+//        brush.setColor(Color.BLACK);
+//        currentColor(brush.getColor());
+
+        pencil = true;
+        rectangle = false;
+        circle = false;
     }
 
-    public void currentColor(int c){
-        currentCol = c;
-        path = new Path();
+    public void setRectangle(View view) {
+        pencil = false;
+        rectangle = true;
+        circle = false;
     }
+
+    public void setCircle(View view) {
+        pencil = false;
+        rectangle = false;
+        circle = true;
+    }
+
+    public void clearScreen(View view) {
+        drawCanvas.drawColor(Color.WHITE);
+    }
+
+//    public void currentColor(int c){
+//        currentCol = c;
+//        path = new Path();
+//    }
 
     private Bitmap createBitmapFromView(Context context, View view) {
         DisplayMetrics displayMetrics = new DisplayMetrics();

@@ -53,22 +53,38 @@
         android:id="@+id/drawMenu"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_80sdp"
-        android:background="@drawable/draw_menu_border"
-        android:layout_margin="@dimen/_3sdp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        >
+        android:layout_marginStart="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_3sdp"
+        android:layout_marginBottom="@dimen/_3sdp"
+        android:background="@drawable/draw_menu_border">
 
         <Button
-            android:id="@+id/drawButton"
+            android:id="@+id/pencilButton"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_margin="@dimen/_25sdp"
             android:background="@drawable/ic_draw"
-            android:onClick="pencil"
+            android:onClick="setPencil"
             app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/clearButton"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_margin="@dimen/_25sdp"
+            android:background="@drawable/ic_clear"
+            android:onClick="clearScreen"
+            app:backgroundTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/drawCircle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
@@ -80,12 +96,12 @@
             android:layout_margin="@dimen/_25sdp"
             android:layout_marginStart="56dp"
             android:background="@drawable/ic_rect"
+            android:onClick="setRectangle"
             app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/drawCircle"
-            app:layout_constraintStart_toEndOf="@+id/drawButton"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.508" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/pencilButton"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/drawCircle"
@@ -93,24 +109,13 @@
             android:layout_height="@dimen/_35sdp"
             android:layout_margin="@dimen/_25sdp"
             android:background="@drawable/ic_circle"
+            android:onClick="setCircle"
             app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/drawButton"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.491" />
 
-        <Button
-            android:id="@+id/drawDiamond"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:background="@drawable/ic_diamond"
-            android:layout_margin="@dimen/_25sdp"
-            app:backgroundTint="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/drawCircle"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

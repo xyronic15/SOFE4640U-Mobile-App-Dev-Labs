@@ -3,8 +3,11 @@ package com.uoit.noteme;
 import static com.uoit.noteme.FlowchartActivity.brush;
 import static com.uoit.noteme.FlowchartActivity.canvasBitmap;
 import static com.uoit.noteme.FlowchartActivity.canvasPaint;
+import static com.uoit.noteme.FlowchartActivity.circle;
 import static com.uoit.noteme.FlowchartActivity.drawCanvas;
 import static com.uoit.noteme.FlowchartActivity.path;
+import static com.uoit.noteme.FlowchartActivity.pencil;
+import static com.uoit.noteme.FlowchartActivity.rectangle;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +31,9 @@ public class DrawDisplay extends View {
 //    public static ArrayList<Integer> colorList = new ArrayList<>();
 //    public ViewGroup.LayoutParams params;
     public static int currentCol = Color.BLACK;
+    private static final float RECT_HALF_WIDTH = 100;
+    private static final float RECT_HALF_HEIGHT = 75;
+    private static final float CIRCLE_RADIUS = 75;
 
 //    public DrawDisplay(Context context) {
 //        super(context);
@@ -61,6 +68,9 @@ public class DrawDisplay extends View {
         brush.setStrokeJoin(Paint.Join.ROUND);
         brush.setStrokeCap(Paint.Cap.ROUND);
 
+        pencil = true;
+        rectangle = false;
+
         canvasPaint = new Paint(Paint.DITHER_FLAG);
     }
 
@@ -84,20 +94,38 @@ public class DrawDisplay extends View {
 //                return false;
 //        }
 
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                path.moveTo(x, y);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                path.lineTo(x, y);
-                break;
-            case MotionEvent.ACTION_UP:
-                path.lineTo(x, y);
-                drawCanvas.drawPath(path, brush);
-                path.reset();
-                break;
-            default:
-                return false;
+        if (pencil){
+            switch (event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    path.moveTo(x, y);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    path.lineTo(x, y);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    path.lineTo(x, y);
+                    drawCanvas.drawPath(path, brush);
+                    path.reset();
+                    break;
+                default:
+                    return false;
+            }
+        } else if (rectangle){
+            switch (event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    drawCanvas.drawRect(x-RECT_HALF_WIDTH, y-RECT_HALF_HEIGHT, x+RECT_HALF_WIDTH, y+RECT_HALF_HEIGHT, brush);
+                    break;
+                default:
+                    return false;
+            }
+        } else if (circle){
+            switch (event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    drawCanvas.drawCircle(x, y, CIRCLE_RADIUS, brush);
+                    break;
+                default:
+                    return false;
+            }
         }
 
         invalidate();
