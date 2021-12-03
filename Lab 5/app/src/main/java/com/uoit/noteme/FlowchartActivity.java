@@ -23,8 +23,11 @@ import java.io.ByteArrayOutputStream;
 
 public class FlowchartActivity extends AppCompatActivity {
 
-    public static Path path = new Path();
-    public static Paint brush = new Paint();
+    public static Path path;
+    public static Paint brush;
+    public static Paint canvasPaint;
+    public static Canvas drawCanvas;
+    public static Bitmap canvasBitmap;
 
 
     @Override
@@ -40,7 +43,8 @@ public class FlowchartActivity extends AppCompatActivity {
         findViewById(R.id.imageSave).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Bitmap bmp = createBitmapFromView(getApplicationContext(), drawingLayout);
+//                Bitmap bmp = createBitmapFromView(getApplicationContext(), drawingLayout);
+                Bitmap bmp = canvasBitmap;
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
                 byte[] byteArray = out.toByteArray();
